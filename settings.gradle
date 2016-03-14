@@ -16,4 +16,4 @@ include 'api'
 include 'services:webservice'
 */
 
-rootProject.name = 'cb-services-reference'
+rootProject.name = 'cb-services-automated-testing'
