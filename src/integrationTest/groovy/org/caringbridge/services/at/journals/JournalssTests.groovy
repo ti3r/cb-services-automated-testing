@@ -1,30 +1,35 @@
-package org.caringbridge.services.at.journals
-import com.jayway.jsonpath.Configuration
-import com.jayway.jsonpath.ReadContext
-import com.jayway.jsonpath.Option
+package org.caringbridge.services.at.journals;
+
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.ReadContext;
+import com.jayway.jsonpath.Option;
 
 import java.io.IOException;
 
-import org.caringbridge.services.at.errors.MyErrorHandler
+import org.caringbridge.services.at.errors.MyErrorHandler;
 import org.junit.After;
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.web.client.RestTemplate
-import spock.lang.Specification
-import com.jayway.jsonpath.JsonPath
-import static java.util.UUID.randomUUID
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.web.client.RestTemplate;
+import spock.lang.Specification;
+import com.jayway.jsonpath.JsonPath;
+import static java.util.UUID.randomUUID;
 
-class JournalssTests extends Specification{
+import org.caringbridge.services.at.CbBaseSpecification;
+import org.caringbridge.services.at.Configuration;
+
+class JournalssTests extends CbBaseSpecification{
     
     @Test
-    def "Test Get Journals for site 25"(){
+    public void "Test Get Journals for site 25"(){
         when: "Get Journals for site 25"
             def (status, body) = getJournals("25")    
             ReadContext ctx = JsonPath.parse(body)
-            
         then: "Check OK status and journal body"
             status == HttpStatus.OK
             List journals = ctx.read("\$")
@@ -53,7 +58,7 @@ class JournalssTests extends Specification{
         when: "Get journals for site 25 and draft status"
             def (status, body) = getJournals("25",null,"draft")
         then: "Parse the result of the body"
-            println body
+            //println body
             List journals = JsonPath.parse(body).read("\$")
         expect:
             status == HttpStatus.OK
@@ -64,8 +69,8 @@ class JournalssTests extends Specification{
     def "Test get journal"(){
         when: "I get the journal with id 51f91598f294d4f14195373b"
             def(status, body) = getJournal("51f91598f294d4f14195373b")
-        then: "Parse the result"
-            Object j = JsonPath.parse(body).read("\$")
+        then: "Parse the array result and test first element"
+            Object j = JsonPath.parse(body).json();
             //println j
             status == HttpStatus.OK
             j != null
@@ -83,9 +88,7 @@ class JournalssTests extends Specification{
     
     def getJournal(String journalId){
         def url = 'http://vm30-2.caringbridge.org:11001/journals/'<<journalId
-        RestTemplate t = new RestTemplate()
-        t.setErrorHandler(new MyErrorHandler());
-        ResponseEntity ent = t.getForEntity(url.toString(), String.class)
+        ResponseEntity ent = restTemplates.getRestTemplate().getForEntity(url.toString(), String.class)
         String body = ent.body
         HttpStatus status = ent.statusCode
         return [status, body]
@@ -98,9 +101,7 @@ class JournalssTests extends Specification{
        if (stateFilter != null)
            url <<"&state="<<stateFilter
                
-       RestTemplate t = new RestTemplate()
-       t.setErrorHandler(new MyErrorHandler());
-       ResponseEntity ent = t.getForEntity(url.toString(), String.class)
+       ResponseEntity ent = restTemplates.getRestTemplate().getForEntity(url.toString(), String.class)
        String body = ent.body
        HttpStatus status = ent.statusCode
        return [status, body]
@@ -113,8 +114,8 @@ class JournalssTests extends Specification{
        journal.body != null
        journal.userId != null
        journal.siteId != null
-       journal.deleted != null
-       journal.draft != null
+       //journal.deleted != null
+       //journal.draft != null
    }
    
 }

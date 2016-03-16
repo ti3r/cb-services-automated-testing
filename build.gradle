@@ -69,13 +69,14 @@ task integrationTest(type: Test) {
 dependencies {
     //CB common library
     compile(group: 'org.caringbridge', name: 'cb-services-common', version: '1.+')
-    integrationTestCompile('org.codehaus.groovy:groovy-all:2.4.5')
+    compile('junit:junit:4.+')
+    testCompile('org.codehaus.groovy:groovy-all:2.4.5')
     //Test dependencies
-    integrationTestCompile('junit:junit:4.+')
-    integrationTestCompile('cglib:cglib-nodep:3.2.+')
-    integrationTestCompile('com.jayway.jsonpath:json-path:2.1.+')
-    //testCompile('org.seleniumhq.selenium:selenium-java:2+')
-    integrationTestCompile('org.spockframework:spock-core:1.0-groovy-2.4')
+    testCompile('cglib:cglib-nodep:3.2.+')
+    testCompile('com.jayway.jsonpath:json-path:2.1.+')
+    testCompile('org.springframework:spring-test:4.2.5.RELEASE')
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.4')
+    testCompile('org.spockframework:spock-spring:1.0-groovy-2.4')
 }
 
 
