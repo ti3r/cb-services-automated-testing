@@ -58,18 +58,28 @@ configurations {
 }
 
 task integrationTest(type: Test) {
-    
     reports.html.enabled = true
     reports.junitXml.enabled = true
     testClassesDir = sourceSets.integrationTest.output.classesDir
     classpath = sourceSets.integrationTest.runtimeClasspath
 
+    //Configure logging defaults using jvm system properties
+    systemProperty "org.slf4j.simpleLogger.logFile", "System.out"
+    systemProperty "org.slf4j.simpleLogger.log.org.springframework", "error"
+}
+
+tasks.withType(Test){
+    testLogging {
+        showStandardStreams = true
+    }
 }
 
 dependencies {
     //CB common library
     compile(group: 'org.caringbridge', name: 'cb-services-common', version: '1.+')
     compile('junit:junit:4.+')
+    compile('org.slf4j:slf4j-simple:1.7.+')
+
     testCompile('org.codehaus.groovy:groovy-all:2.4.5')
     //Test dependencies
     testCompile('cglib:cglib-nodep:3.2.+')
@@ -77,6 +87,7 @@ dependencies {
     testCompile('org.springframework:spring-test:4.2.5.RELEASE')
     testCompile('org.spockframework:spock-core:1.0-groovy-2.4')
     testCompile('org.spockframework:spock-spring:1.0-groovy-2.4')
+    
 }
 
 

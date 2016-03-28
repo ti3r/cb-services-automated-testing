@@ -4,9 +4,11 @@ import spock.lang.Specification;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.client.RestTemplate
 import org.caringbridge.services.at.errors.MyErrorHandler
+import org.caringbridge.services.at.rules.LoggerRule;
 import org.caringbridge.services.at.rules.RestTemplateRule
 import org.junit.Rule;
 import org.junit.rules.TestName
+import com.jayway.jsonpath.JsonPath;
 
 /**
  * The base specification class that provides basic functionality 
@@ -23,7 +25,7 @@ public class CbBaseSpecification extends Specification{
      * endpoints for the apis.
      */
     @Rule
-    RestTemplateRule restTemplates = new RestTemplateRule();
+    public RestTemplateRule restTemplates = new RestTemplateRule();
     /**
      * provides the name of the test case in case needed during the execution
      * of the test scenario.
@@ -31,5 +33,13 @@ public class CbBaseSpecification extends Specification{
     @Rule
     public TestName name = new TestName();
     
+    @Rule
+    public LoggerRule logger = new LoggerRule();
+    
+    
+    
+    def parseStringAsJson(body){
+        return JsonPath.parse(body).json()
+    }
     
 }

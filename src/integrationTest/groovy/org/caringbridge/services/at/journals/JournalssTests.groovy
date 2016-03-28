@@ -23,6 +23,12 @@ import static java.util.UUID.randomUUID;
 import org.caringbridge.services.at.CbBaseSpecification;
 import org.caringbridge.services.at.Configuration;
 
+/**
+ * Integration tests for the different functionality of the
+ * journals api in the micro-services platform.
+ * @author Alexandro Blanco <ablanco@caringbridge.org>
+ *
+ */
 class JournalssTests extends CbBaseSpecification{
     
     @Test

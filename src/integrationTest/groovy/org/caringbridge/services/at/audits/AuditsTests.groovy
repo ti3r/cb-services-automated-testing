@@ -9,7 +9,12 @@ import org.junit.Test;
 import java.util.List;
 import com.jayway.jsonpath.JsonPath;
 
-
+/**
+ * Integration tests for the different functionality of the
+ * audits api in the micro-services platform.
+ * @author Alexandro Blanco <ablanco@caringbridge.org>
+ *
+ */
 class AuditsTests extends CbBaseSpecification{
 
     @Test
@@ -36,7 +41,8 @@ class AuditsTests extends CbBaseSpecification{
         if (pageSize != null){
             url <<'&pageSize='<<pageSize
         }
-        def ent = getRestTemplates().restTemplate.getForEntity(url.toString(),String.class)
+        logger.logger.debug("GET {}",url.toString());
+        def ent = restTemplates.restTemplate.getForEntity(url.toString(),String.class)
         def json = JsonPath.parse(ent.body).read("\$")
         return [ent.statusCode, ent.body, json]
     }
