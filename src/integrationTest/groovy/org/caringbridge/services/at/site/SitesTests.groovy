@@ -44,7 +44,7 @@ class SitesTests extends CbBaseSpecification {
     @Test
     def "get list of sites since date"(){
         when:
-            def url = 'http://vm30-2.caringbridge.org:11003/labs/sites?since=' << "2016-01-01"
+            def url = 'http://vm30-2.caringbridge.org:11003/labs/sites?since=' << "2016-01-01T00:00:00"
             def resp = restTemplates.getRestTemplate().getForEntity(url.toString(), String.class)
         then:
             resp.statusCode == HttpStatus.OK
