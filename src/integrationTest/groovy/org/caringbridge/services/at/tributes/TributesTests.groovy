@@ -15,7 +15,7 @@ import java.util.List;
 class TributesTests extends CbBaseSpecification {
 
     @Test
-    def "get an tributes of site"(){
+    def "get tributes of site"(){
         when:
             def url = 'http://vm30-2.caringbridge.org:11002/tributes?siteId=' << '231542'
             def result = restTemplates.getRestTemplate().getForEntity(url.toString(), String.class)
